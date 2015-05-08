@@ -34,7 +34,8 @@
         android:id="@+id/button"
         android:layout_alignBottom="@+id/numberTextField"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:onClick="getFibonnaciNumber" />
 
     <TextView
         android:layout_width="wrap_content"

@@ -26,7 +26,7 @@ public class MainActivity extends ActionBarActivity {
         outputView = (TextView) findViewById(R.id.resultTextView);
     }
 
-    public void calcularOperacion(View view) {
+    public void getFibonnaciNumber(View view) {
         int n = Integer.parseInt(inputNumber.getText().toString());
         if(n < 1) {
             outputView.append("No es posible calcular posiciones negativas o la posicion 0 de la serie de fibonnaci.\n");
