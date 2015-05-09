@@ -37,6 +37,17 @@ public class MainActivity extends ActionBarActivity {
             fibonacciThread.execute(n);
         }
     }
+    public void getFactorialNumber(View view) {
+        int n = Integer.parseInt(inputNumber.getText().toString());
+        if(n < 0) {
+            outputView.append("No es posible calcular factorial de un numero negativo.\n");
+        }
+        else {
+            outputView.append(n + "! = ");
+            FactorialOperationThread factorialThread = new FactorialOperationThread();
+            factorialThread.execute(n);
+        }
+    }
 
     class FibonacciOperationThread extends AsyncTask<Integer, Integer, Integer> {
 
@@ -89,6 +100,83 @@ public class MainActivity extends ActionBarActivity {
                     n2 = n1;
                     n1 = result;
                     result = n1 + n2;
+
+                    SystemClock.sleep(150);
+
+                    publishProgress(i*100 / n[0]);
+
+                }
+                return result;
+            }
+        }
+
+        @Override protected void onProgressUpdate(Integer... porc) {
+
+            progressDialog.setProgress(porc[0]);
+
+        }
+
+        @Override protected void onPostExecute(Integer res) {
+
+            progressDialog.dismiss();
+
+            outputView.append(res + "\n");
+
+        }
+
+        @Override protected void onCancelled() {
+
+            outputView.append("Cancelado.\n");
+
+        }
+
+    }
+
+    class FactorialOperationThread extends AsyncTask<Integer, Integer, Integer> {
+
+        private ProgressDialog progressDialog;
+
+        @Override protected void onPreExecute() {
+
+            progressDialog = new ProgressDialog(MainActivity.this);
+
+            progressDialog.setProgressStyle(ProgressDialog.
+                    STYLE_HORIZONTAL);
+
+            progressDialog.setMessage("Calculando...");
+
+            progressDialog.setCancelable(true);
+
+            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+
+                @Override
+                public void onCancel(DialogInterface dialog) {
+
+                    FactorialOperationThread.this.cancel(true);
+
+                }
+
+            });
+
+            progressDialog.setMax(100);
+
+            progressDialog.setProgress(0);
+
+            progressDialog.show();
+
+        }
+
+        @Override protected Integer doInBackground(Integer... n) {
+
+            int result = 1;
+            int baseNumber = n[0];
+
+            if(baseNumber == 1 || baseNumber == 0) {
+                return 1;
+            }
+            else {
+                for (int i = 2; i <= baseNumber && !isCancelled(); i++) {
+                    result *= i;
 
                     SystemClock.sleep(150);
 
